@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js">
+</script>
+<script type="text/javascript">
+$(document).ready( function() {
+	$("#headers").load("header");  //헤더 인클루드
+	$("#navigator").load("navigator");
+	}
+);
+</script>
+<style type="text/css">
+	.form_container{
+    width: 350px;
+    margin: 0 auto
+
+}
+
+.form_container .form{
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    padding: 0 40px 25px 40px;
+    margin-bottom: 30px;
+}
+
+
+.form .title {
+    overflow: hidden;
+    text-indent: 110%;
+    margin: 22px auto 8px;
+}
+
+
+.form label{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.form input{
+    width: 100%;
+    background: 0 0;
+    border: 1px solid #efefef;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #262626;
+    font-size: 14px;
+    padding: 7px 8px 7px;
+}
+
+.form p{
+    margin-bottom: 10px;
+}
+
+.form .submit_btn{
+    background: #3897f0;
+    border-color: #3897f0;
+    color: #fff;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 28px;
+    outline: none;
+    width: 100%;
+    padding: 0;
+    margin-top: 10px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>    
+<section id="container">
+	<div id="headers"></div>
+	<div id="navigator"></div>
+
+    <div id="main_container">
+        <div class="form_container">
+            <div class="form">
+                <h1 class="sprite_insta_big_logo title"></h1>
+			  	<form action="signup" method = "POST">
+					<div class="form-group">
+					  <input type="text" class="form-control" id="userId" name = "userId" placeholder="사용자 계정"  autofocus>
+					  <span id="spanid" style="color:red"></span>
+					</div>
+					<br/>
+				    <div class="form-group">
+					  <input type="text" class="form-control" id="userPwd" name = "userPwd" placeholder="비밀번호">
+					  <span id="spanpwd" style="color:red"></span>
+					</div>
+					<br/>
+					<div class="form-group">
+					  <input type="text" class="form-control" id="userName" name = "userName" placeholder="성명">
+					  <span id="spanname" style="color:red"></span>
+					</div>
+					<br/>
+					<div class="form-group">
+					  <input type="text" class="form-control" id="userEmail" name = "userEmail" placeholder="이메일 주소">
+					  <span id="spanemail" style="color:red"></span>
+					</div>
+					<br/>
+					<button type="submit" class="submit_btn" id="btn-create" onclick="check()">가입</button>
+				  </form>
+            </div>
+
+            <div class="bottom_box">
+                <div>
+                    <span>계정이 있으신가요?</span><a href="/login">로그인</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+	$(function(){
+		$('#userId').blur(function(){
+			console.log('아이디');
+			var id = $('#userId').val();
+			if(id.length==0){		
+				$('#spanid').attr('style','color:#ff0000').html('아이디를 입력해주세요.');
+			}
+			else if(id.length<4){			
+				$('#spanid').attr('style','color:#ff0000').html('4~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다..');
+			}
+			else{
+				$('#spanid').html('');
+				var data = $('#userId').val();
+				console.log(data);
+				$.ajax({
+					type:"post",
+					url:"http://localhost:8080/idCheck.do",
+					dataType: 'json',
+					data: "userId="+data,
+					success:function(data){
+						console.log('서버로 부터 받은 데이타 : ',data["flag"]);
+						if(data["flag"]=='1')
+							$('#spanid').attr('style','color:#00ff00').html(data["msg"]);
+						else
+							$('#spanid').attr('style','color:#ff0000').html(data["msg"]);
+					}				
+				});						
+			}		
+		});//아이디
+		
+		$('#userPwd').blur(function(){
+			var pwd = $('#userPwd').val();
+			if(pwd.length==0){
+				$('#spanpwd').attr('style','color:#ff0000').html('비밀번호를 입력해주세요.');
+			}
+		});
+		
+		$('#userName').blur(function(){
+			var name = $('#userName').val();
+			if(name.length==0){
+				$('#spanname').attr('style','color:#ff0000').html('이름을 입력해주세요.');
+			}
+		});
+		
+		$('#userEmail').blur(function(){
+			var name = $('#userEmail').val();
+			if(name.length==0){
+				$('#spanemail').attr('style','color:#ff0000').html('이메일을 입력해주세요.');
+			}
+		});
+	});
+	
+	function check(){
+		var id = document.getElementById('userId');
+		var pwd = document.getElementById('userPwd');
+		var name = document.getElementById('userName');
+		var email = document.getElementById('userEmail');
+		
+		if( id.value == '' || id.value == null ){
+		    alert( '아이디를 입력해주세요' );
+		    return false;
+		}else if( pwd.value == '' || pwd.value == null ){
+		    alert( '비밀번호를 입력해주세요' );
+		    return false;
+		}else if( name.value == '' || name.value == null ){
+		    alert( '이름를 입력해주세요' );
+		    return false;
+		}else if( email.value =='' || email.value == null){
+			alert('이메일을 입력해주세요');
+			return false;
+		}
+	}
+</script>
+</body>
+</html>
