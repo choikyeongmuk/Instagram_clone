@@ -32,4 +32,13 @@
 		AND
 			user_pwd = #{userPwd}
 	</select>
+	
+	<select id="userInfo" resultType="com.insta.domain.UserDTO">
+		SELECT
+			*
+		FROM
+			user_info
+		WHERE
+			user_id = #{userId}
+	</select>
 </mapper>

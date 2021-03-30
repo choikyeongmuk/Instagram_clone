@@ -18,8 +18,33 @@
 	
 	<select id="list" parameterType="com.insta.domain.BoardDTO" resultType="com.insta.domain.BoardDTO">
 		SELECT
-			*
+			board_no,user_id,content,image
 		FROM
 			insta_board
 	</select>
+	
+	<select id="detail" parameterType="com.insta.domain.BoardDTO" resultType="com.insta.domain.BoardDTO">
+		SELECT
+			*
+		FROM
+			insta_board
+		WHERE
+			board_no = #{boardNo}
+	</select>
+	
+	<insert id="writeComment">
+		INSERT INTO
+			insta_board_comment(
+				board_no,
+				reply_no,
+				user_id,
+				com_comment
+			)
+		VALUES(
+			#{boardNo},
+			#{replyNo},
+			#{userId},
+			#{comComment}
+		)
+	</insert>
 </mapper>

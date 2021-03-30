@@ -21,5 +21,9 @@ public class LayoutController {
 		return "layout/navigator";
 	}
 	
+	@GetMapping("/footer")
+	public String footer() {
+		return "layout/footer";
+	}
 	
 }

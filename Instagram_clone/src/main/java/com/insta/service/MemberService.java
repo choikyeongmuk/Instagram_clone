@@ -1,5 +1,7 @@
 package com.insta.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,9 @@ public class MemberService {
 	
 	public String login(String userId, String userPwd) {
 		return memberMapper.login(userId, userPwd);
+	}
+	
+	public UserDTO userInfo(String userId){
+		return memberMapper.userInfo(userId);
 	}
 }

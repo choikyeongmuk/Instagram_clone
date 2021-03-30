@@ -15,9 +15,12 @@ public class BoardDTO {
 	private String image;
 	private Date postDate;
 	
-	public BoardDTO(String userId, String content, String image) {
+	public BoardDTO(int boardNo, String userId, String content, String image) {
+		super();
+		this.boardNo = boardNo;
 		this.userId = userId;
 		this.content = content;
 		this.image = image;
 	}
+	
 }

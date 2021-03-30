@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.insta.domain.BoardCommentDTO;
 import com.insta.domain.BoardDTO;
 import com.insta.mapper.BoardMapper;
 
@@ -18,7 +19,15 @@ public class BoardService {
 		return boardMapper.write(board);
 	}
 	
-	public List<BoardDTO> list(BoardDTO board){
-		return boardMapper.list(board);
+	public List<BoardDTO> list(){
+		return boardMapper.list();
+	}
+	
+	public BoardDTO detail(int boardNo) {
+		return boardMapper.detail(boardNo);
+	}
+	
+	public boolean writeComment(BoardCommentDTO comment) {
+		return boardMapper.writeComment(comment);
 	}
 }

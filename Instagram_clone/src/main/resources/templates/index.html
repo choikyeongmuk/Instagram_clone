@@ -84,7 +84,7 @@
                             <div>
                             	<a>
 									<i class="fa fa-file-o" aria-hidden="true"></i>
-									<img th:src="${row.image}">
+									<img th:src="@{/upload/{image} (image=${row.image})}" style="height: 500px">
 								</a>
                             </div>
                         </div>
@@ -95,7 +95,8 @@
                             <div class="heart_btn">
                                 <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
                             </div>
-                            <div class="sprite_bubble_icon"></div>
+                            <div class="sprite_bubble_icon" onclick="detail()"></div>
+                            <a th:href="|@{/detail?}boardNo=${row.boardNo}|" th:text="${row.boardNo}"></a>
                             <div class="sprite_share_icon" data-name="share"></div>
                         </div>
                         <div class="right_icon">
@@ -239,5 +240,10 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="js/main.js"></script>
+<script type="text/javascript">
+	function detail(){
+		location.href="detail";
+	}
+</script>
 </body>
 </html>
