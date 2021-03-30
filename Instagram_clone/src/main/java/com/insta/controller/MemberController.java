@@ -3,16 +3,15 @@ package com.insta.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.gson.JsonObject;
-import com.google.gson.*;
-import com.google.*;
 import com.insta.domain.UserDTO;
 import com.insta.service.MemberService;
 
@@ -45,14 +44,16 @@ public class MemberController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-		return "/login";
+		return "login";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String userId,String userPwd,HttpServletResponse response) throws IOException {
+	public String login(String userId,String userPwd,HttpServletRequest req,HttpServletResponse response) throws IOException {
 		try {
 			if(!memberService.login(userId, userPwd).equals("")) {
-				return "/main";
+				HttpSession session = req.getSession();
+				session.setAttribute("userId",userId);
+				return "redirect:/index";
 			}
 		}catch(Exception e) {
 			response.setContentType("text/html; charset=UTF-8");

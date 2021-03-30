@@ -21,9 +21,5 @@ public class LayoutController {
 		return "layout/navigator";
 	}
 	
-	@GetMapping("/write")
-	public String write() {
-		return "write";
-	}
 	
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.insta.mapper.BoardMapper">
+	
+	<insert id="write">
+		INSERT INTO
+			insta_board(
+				user_id, 
+				content, 
+				image
+			)
+		VALUES(
+			#{userId},
+			#{content},
+			#{image}
+		)
+	</insert>
+	
+	<select id="list" parameterType="com.insta.domain.BoardDTO" resultType="com.insta.domain.BoardDTO">
+		SELECT
+			*
+		FROM
+			insta_board
+	</select>
+</mapper>

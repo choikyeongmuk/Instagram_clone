@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/basic">
+<head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js">
+</script>
+</head>
+<body>
+
+<section id="container">
+	 <div id="main_container">
+        <div class="post_form_container">
+            <form action="write" class="post_form" method="POST" enctype="multipart/form-data">
+                <div class="title">
+                    NEW POST
+                </div>
+                <div class="preview">
+                    <div class="upload">
+                        <div class="post_btn">
+                            <div class="plus_icon">
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <p>포스트 이미지 추가</p>
+                            <canvas id="imageCanvas"></canvas>
+                           <!--  <p><img id="img_id" src="#" style="width: 300px; height: 300px; object-fit: cover" alt="thumbnail"></p> -->
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <input type="file" name="file" id="f_name" required="required">
+                </p>
+                <!-- <p>
+                	<input type="text" class="form-control" id="userId" name = "userId" placeholder="작성자">
+                </p> -->
+                <p>
+                	<textarea name="content" class="form-control" id="content" cols="50" rows="5" 
+                	placeholder="140자 까지 등록 가능합니다. #태그명 을 통해서 검색 태그를 등록할 수 있습니다. 예시 : I # love # insta!"></textarea>
+                </p>
+                <input class="submit_btn" type="submit" value="저장">
+            </form>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+<script>
+       var fileInput  = document.querySelector( "#f_name" ),
+           button     = document.querySelector( ".input-file-trigger" ),
+           the_return = document.querySelector(".file-return");
+
+       // Show image
+       fileInput.addEventListener('change', handleImage, false);
+       var canvas = document.getElementById('imageCanvas');
+       var ctx = canvas.getContext('2d');
+
+
+        function handleImage(e){
+           var reader = new FileReader();
+           reader.onload = function(event){
+               var img = new Image();
+               // var imgWidth =
+               img.onload = function(){
+                   canvas.width = 300;
+                   canvas.height = 300;
+                   ctx.drawImage(img,0,0,300,300);
+               };
+               img.src = event.target.result;
+               // img.width = img.width*0.5
+               // canvas.height = img.height;
+           };
+           reader.readAsDataURL(e.target.files[0]);
+       }
+</script>
+</body>
+</html>
