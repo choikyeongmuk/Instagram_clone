@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.insta.mapper.BoardLikeMapper">
+
+   <insert id="insertLike" parameterType="com.insta.domain.BoardLikeDTO">
+   INSERT INTO 
+         insta_board_like
+   VALUES(
+            #{boardNo}
+         ,   #{userId}
+   ) 
+   </insert>
+
+   <update id="updateLike" parameterType="com.insta.domain.BoardLikeDTO">
+      UPDATE 
+            insta_board
+      SET 
+            likeCount = (SELECT 
+                              COUNT(*)
+                       FROM 
+                                insta_board_like
+                       WHERE 
+                                board_no=#{boardNo}
+                      )
+      WHERE 
+            board_no=#{boardNo}
+   </update>
+
+   <delete id="deleteLike" parameterType="com.insta.domain.BoardLikeDTO">
+      DELETE FROM
+            insta_board_like
+      WHERE
+            board_no=#{boardNo} 
+      AND
+             user_id=#{userId} 
+   </delete>
+
+   <select id="getLikeCount" parameterType="com.insta.domain.BoardLikeDTO" resultType="int">
+      SELECT 
+            COUNT(*)
+      FROM 
+            insta_board_like
+      WHERE 
+            board_no=#{boardNo} 
+   </select>
+
+   <select id="getMyLike" parameterType="com.insta.domain.BoardLikeDTO" resultType="int">
+      SELECT 
+            COUNT(*)
+      FROM 
+            insta_board_like
+      WHERE
+            board_no=#{boardNo}
+      AND 
+            user_id=#{userId} 
+   </select>
+
+   <select id="selectLikeList" parameterType="com.insta.domain.BoardLikeDTO" resultType="com.insta.domain.BoardLikeDTO">
+      SELECT 
+            * 
+      FROM
+            insta_board_like 
+   </select>
+
+</mapper>

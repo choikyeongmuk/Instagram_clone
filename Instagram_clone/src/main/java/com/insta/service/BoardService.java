@@ -30,4 +30,8 @@ public class BoardService {
 	public boolean writeComment(BoardCommentDTO comment) {
 		return boardMapper.writeComment(comment);
 	}
+	
+	public List<BoardCommentDTO> commentList(int boardNo){
+		return boardMapper.commentList(boardNo);
+	}
 }

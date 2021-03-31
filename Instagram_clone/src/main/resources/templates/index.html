@@ -92,11 +92,14 @@
 
                     <div class="bottom_icons">
                         <div class="left_icons">
-                            <div class="heart_btn">
-                                <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
+                            <div style="text-align: right;">
+                               <a class="btn btn-outline-dark heart" th:href="|@{/heartAction?}boardNo=${row.boardNo}&userID='${session.userId}'&heart=${row.likeCount}|" style="color: #00000000; width: 24px; height: 24px; display: inline-block;"> 
+                               <img id="heart" src=""> 
+                               </a>
                             </div>
-                            <div class="sprite_bubble_icon" onclick="detail()"></div>
-                            <a th:href="|@{/detail?}boardNo=${row.boardNo}|" th:text="${row.boardNo}"></a>
+                            <div class="sprite_bubble_icon">
+                            	<a th:href="|@{/detail?}boardNo=${row.boardNo}|" style="color: #00000000; width: 24px; height: 24px; display: inline-block;"></a>
+                            </div>
                             <div class="sprite_share_icon" data-name="share"></div>
                         </div>
                         <div class="right_icon">
@@ -240,10 +243,58 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="js/main.js"></script>
-<script type="text/javascript">
-	function detail(){
-		location.href="detail";
-	}
+<script th:inline="javascript">
+   /*<![CDATA[*/
+	   
+	 /* $(function(){
+		 nClick($("#b_no"));
+	 });
+   
+   function nClick(e){
+	   e.click(function(){
+		   alert(e.text());
+	   })
+   } */
+   
+     $(document).ready(function () {
+
+           var heartval = /*[[${likeCount}]]*/;
+        
+           /* var boardNo = document.getElementById("b_no").innerHTML;
+           console.log("???",boardNo); */
+           if(heartval>0) {
+               console.log(heartval);
+               $("#heart").prop("src", "imgs/heart2.png");
+               $(".heart").prop('name',heartval)
+           }
+           else {
+               console.log(heartval);
+               $("#heart").prop("src", "imgs/heart.png");
+               $(".heart").prop('name',heartval)
+           }
+
+           $(".heart").on("click", function () {
+
+               var that = $(".heart");
+               var boardNo = $("#b_no").text();
+               var sendData = {'boardNo' : boardNo,'heart' : that.prop('name')};
+               $.ajax({
+                   url :"/heart?boardNo="+ boardNo +"&userId='test'",
+                   type :'POST',
+                   data : sendData,
+                   success : function(data){
+                       that.prop('name',data);
+                       if(data==1) {
+                           $('#heart').prop("src","imgs/heart2.png");
+                       }
+                       else{
+                           $('#heart').prop("src","imgs/heart.png");
+                       }
+                   }
+               });
+           });
+       });
+     /*]]>*/
 </script>
 </body>
 </html>

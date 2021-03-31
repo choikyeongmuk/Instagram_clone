@@ -51,12 +51,12 @@
 									</div>
 								</div>
 
-								<div class="user_container-detail">
+								<div class="user_container-detail" th:if="${not #lists.isEmpty( commentList )}" th:each="row : ${commentList}">
 									<div class="user">
 										<img src="imgs/thumb02.jpg" alt="user">
 									</div>
 									<div class="comment">
-										<span class="user_id">in0.lee</span>너무귀엽네요 ㅎㅎㅎ맞팔해요~!
+										<span class="user_id" th:text="${row.userId}"></span>[[ ${row.comComment} ]]
 										<div class="time">
 											2시간 <span class="try_comment">답글 달기</span>
 										</div>
@@ -70,95 +70,16 @@
 										</div>
 									</div>
 								</div>
-
-								<div class="user_container-detail">
-									<div class="user">
-										<img src="imgs/thumb03.jpg" alt="user">
-									</div>
-									<div class="comment">
-										<span class="user_id">ye_solkim</span>강아지 이름이 뭐에요???
-										<div class="time">
-											2시간 <span class="try_comment">답글 달기</span>
-										</div>
-										<div class="icon_wrap">
-											<div class="more_trigger">
-												<div class="sprite_more_icon"></div>
-											</div>
-											<div>
-												<div class="sprite_small_heart_icon_outline"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="user_container-detail">
-									<div class="user">
-										<img src="imgs/thumb02.jpg" alt="user">
-									</div>
-									<div class="comment">
-										<span class="user_id">in0.lee</span>너무귀엽네요 ㅎㅎㅎ맞팔해요~!
-										<div class="time">
-											2시간 <span class="try_comment">답글 달기</span>
-										</div>
-										<div class="icon_wrap">
-											<div class="more_trigger">
-												<div class="sprite_more_icon"></div>
-											</div>
-											<div>
-												<div class="sprite_small_heart_icon_outline"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="user_container-detail">
-									<div class="user">
-										<img src="imgs/thumb03.jpg" alt="user">
-									</div>
-									<div class="comment">
-										<span class="user_id">in0.lee</span>너무귀엽네요
-										<div class="time">
-											2시간 <span class="try_comment">답글 달기</span>
-										</div>
-										<div class="icon_wrap">
-											<div class="more_trigger">
-												<div class="sprite_more_icon"></div>
-											</div>
-											<div>
-												<div class="sprite_small_heart_icon_outline"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="user_container-detail">
-									<div class="user">
-										<img src="imgs/thumb02.jpg" alt="user">
-									</div>
-									<div class="comment">
-										<span class="user_id">in0.lee</span>너무귀엽네요 ㅎㅎㅎ맞팔해요~!
-										<div class="time">
-											2시간 <span class="try_comment">답글 달기</span>
-										</div>
-										<div class="icon_wrap">
-											<div class="more_trigger">
-												<div class="sprite_more_icon"></div>
-											</div>
-											<div>
-												<div class="sprite_small_heart_icon_outline"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-
 							</section>
 
 
 							<div class="bottom_icons">
-								<div class="left_icons">
-									<div class="heart_btn">
-										<div class="sprite_heart_icon_outline" data-name="heartbeat"></div>
-									</div>
+		                        <div class="left_icons">
+		                            <div style="text-align: right;">
+		                               <a class="btn btn-outline-dark heart"> 
+		                               <img id="heart" src="">
+		                               </a>
+		                            </div>
 									<div>
 										<div class="sprite_bubble_icon"></div>
 									</div>
@@ -178,9 +99,9 @@
 							<div class="timer">2시간</div>
 
 							<div class="commit_field">
-								<input type="text" placeholder="댓글달기..">
-
-								<div class="upload_btn">게시</div>
+								<input type="text" placeholder="댓글달기.." id="content">
+								<input type="hidden" id="comment_url" th:value="${board.boardNo}" >
+								<div class="upload_btn" onclick="writeComment()">게시</div>
 							</div>
 						</div>
 					</article>
@@ -197,8 +118,100 @@
 
 	</section>
 
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<!--<script src="js/detail.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<!--<script src="js/detail.js"></script>-->
+<script th:inline="javascript">
+   /*<![CDATA[*/
+   
+     $(document).ready(function () {
 
+           var heartval = /*[[${heart}]]*/;
+
+           if(heartval>0) {
+               console.log(heartval);
+               $("#heart").prop("src", "imgs/heart2.png");
+               $(".heart").prop('name',heartval)
+           }
+           else {
+               console.log(heartval);
+               $("#heart").prop("src", "imgs/heart.png");
+               $(".heart").prop('name',heartval)
+           }
+
+           $(".heart").on("click", function () {
+
+               var that = $(".heart");
+
+               var sendData = {'boardNo' : /*[[${board.boardNo}]]*/,'heart' : that.prop('name')};
+               $.ajax({
+                   url :'/heart',
+                   type :'POST',
+                   data : sendData,
+                   success : function(data){
+                       that.prop('name',data);
+                       if(data==1) {
+                           $('#heart').prop("src","imgs/heart2.png");
+                       }
+                       else{
+                           $('#heart').prop("src","imgs/heart.png");
+                       }
+                   }
+               });
+           });
+       });
+     /*]]>*/
+</script>
+<script type="text/javascript">
+function writeComment(){
+	var comment = $("#content").val();
+	console.log("댓글 :" + comment);
+	
+	var commentUrl = $("#comment_url").val();
+	console.log("주소 :" + commentUrl);
+	
+	data = { content : comment };
+    $.ajax({
+        type: 'post',
+        url: "/writeComment?boardNo="+commentUrl+"&replyNo=0&comComment="+comment,
+        contentType: 'application/json; charset-utf-8',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: listReload()
+    });
+}
+
+function listReload(){
+	console.log("들어옴");
+	$("#content").val("");
+	var commentUrl = $("#comment_url").val();
+	var commentTemplate = $("#commentTemplate").html();
+	//var template = commentTemplate.format()
+	// 비동기 처리 미완성
+	location.href="/detail?boardNo="+commentUrl;
+}
+
+</script>
+<script type="text/template" id = "commentTemplate">
+<div class="user_container-detail" th:if="${not #lists.isEmpty( commentList )}" th:each="row : ${commentList}">
+	<div class="user">
+		<img src="imgs/thumb02.jpg" alt="user">
+	</div>
+	<div class="comment">
+		<span class="user_id" th:text="${row.userId}"></span>[[ ${row.comComment} ]]
+		<div class="time">
+			2시간 <span class="try_comment">답글 달기</span>
+		</div>
+		<div class="icon_wrap">
+			<div class="more_trigger">
+				<div class="sprite_more_icon"></div>
+			</div>
+		<div>
+		<div class="sprite_small_heart_icon_outline"></div>
+	</div>
+</div>
+</div>
+</div>	
+
+</script>
 </body>
 </html>

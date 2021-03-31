@@ -302,5 +302,182 @@
 		margin: 10px;
 	}
 }
+
+.editor{
+	min-width: 50px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+    margin: 30px auto 0;
+    padding: 30px;
+    position: relative;
+    max-width: 935px;
+    width: 100%;
+    height: 800px;
+    border: 1px solid #dbdbdb;
+    background-color: #fff;
+    flex: 1 1 400px;
+}
+.edit_ul{
+	flex-basis: 0;
+    -webkit-box-flex: 0;
+	list-style:none;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: stretch;
+    flex-shrink: 0;
+    margin: 10;
+    padding: 0;
+    border-right: 1px solid rgba(var(--b6a,219,219,219),1);
+    color: rgba(var(--i1d,38,38,38),1);
+}
+.edit_a{
+	border-left: 2px solid transparent;
+    display: block;
+    font-size: 16px;
+    height: 100%;
+    line-height: 20px;
+    padding: 16px 16px 16px 30px;
+    width: calc(100% - 48px);
+    color : rgba(var(--i1d,38,38,38),1);
+    text-decoration: none;
+}
+.edit_selected{
+	border-left-color: rgba(var(--f75,38,38,38),1);
+    font-weight: 600;
+}
+.editor_article{
+	flex: 1 1 400px;
+    min-width: 50px;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    border: 0 solid #000;
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.profile_and_name{
+	-webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    display : flex;
+    flex-direction: row;
+    margin: 32px 0 0;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+.edit_profile{
+	margin: 2px 32px 0 124px;
+	height: 38px;
+    width: 38px;
+}
+.edit_name{
+	-webkit-box-flex: 0;
+    flex: 0 1 auto;
+    margin-right: 20px;
+    overflow-x: hidden;
+}
+.edit_name > h1{
+	font-size: 20px;
+    line-height: 22px;
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.edit_name > button{
+	border: 0;
+    color: rgba(var(--d69,0,149,246),1);
+    display: inline;
+    padding: 0;
+    position: relative;
+    appearance: none;
+    background: 0 0;
+   	box-sizing: border-box;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    text-transform: inherit;
+    text-overflow: ellipsis;
+    user-select: none;
+    width: auto;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0;
+}
+
+.profileImage{
+	background-color: rgba(var(--b3f,250,250,250),1);
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.form > form{
+	-webkit-box-align: stretch;
+    align-items: stretch;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+.edit_user{
+	display : flex;
+	margin-bottom: 16px;
+    -webkit-box-pack: start;
+	justify-content: flex-start;	
+}
+.edit_user > aside{
+	flex: 0 0 194px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    margin-top: 6px;
+    padding-left: 32px;
+    padding-right: 32px;
+    text-align: right;
+    box-sizing: border-box;
+}
+.edit_user > aside > label{
+    text-align: right;
+}
+.edit_user > input{
+	flex-basis: 355px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    padding-right: 60px;
+}
+.edit_user > textarea{
+	margin-top: 0px;
+    margin-bottom: 0px;
+    height: 76px;
+    width: 100%;
+    flex-basis: 355px;
+    border: 1px solid rgba(var(--ca6,219,219,219),1);
+}
 </style>
 </html>

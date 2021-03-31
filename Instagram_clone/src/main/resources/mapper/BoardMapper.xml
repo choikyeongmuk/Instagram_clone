@@ -21,6 +21,10 @@
 			board_no,user_id,content,image
 		FROM
 			insta_board
+		<where>
+		</where>
+		ORDER BY
+				postdate desc
 	</select>
 	
 	<select id="detail" parameterType="com.insta.domain.BoardDTO" resultType="com.insta.domain.BoardDTO">
@@ -47,4 +51,13 @@
 			#{comComment}
 		)
 	</insert>
+	
+	<select id="commentList" resultType="com.insta.domain.BoardCommentDTO">
+		SELECT
+			board_no,reply_no,user_id,com_comment
+		FROM
+			insta_board_comment
+		WHERE
+			board_no = #{boardNo}
+	</select>
 </mapper>

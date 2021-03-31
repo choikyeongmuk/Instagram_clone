@@ -26,7 +26,6 @@ public class MemberController {
 	
 	private PrintWriter out;
 	
-	
 	@RequestMapping(value = "/signup" , method = RequestMethod.GET)
 	public String signUp() {
 		return "signup";
@@ -63,16 +62,31 @@ public class MemberController {
 			out = response.getWriter();
 			out.println("<script>alert('아이디와 비밀번호가 일치하지 않습니다.'); location.href = '/login'</script>");
 		}
-		return "/login";
+		return "login";
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest req) {
+		req.getSession().invalidate();
+		return "login";
 	}
 	
 	@GetMapping("/profile")
-	public String profile(HttpServletRequest req,Model model) {
+	public String profile(HttpServletRequest req, HttpServletResponse response ,Model model) throws IOException {
 		String userId = (String) req.getSession().getAttribute("userId");
-		
+		if(userId == null) {
+			response.setContentType("text/html; charset=UTF-8");
+			out = response.getWriter();
+			out.println("<script>alert('로그인을 해주세요.'); location.href = '/login'</script>");
+		}
 		UserDTO userInfo = memberService.userInfo(userId);
 		model.addAttribute("userInfo", userInfo);
 		return "profile";
+	}
+	
+	@GetMapping("/editProfile")
+	public String editProfile() {
+		return "profile-edit";
 	}
 	
 	/*

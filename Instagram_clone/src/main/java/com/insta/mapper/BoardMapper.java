@@ -16,4 +16,5 @@ public interface BoardMapper {
 	public BoardDTO detail(int boardNo);
 	
 	public boolean writeComment(BoardCommentDTO comment);
+	public List<BoardCommentDTO> commentList(int boardNo);
 }

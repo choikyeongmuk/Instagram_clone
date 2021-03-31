@@ -14,6 +14,9 @@ public class BoardDTO {
 	private String content;
 	private String image;
 	private Date postDate;
+	private int likeCount;
+	private int scrapCount;
+
 	
 	public BoardDTO(int boardNo, String userId, String content, String image) {
 		super();

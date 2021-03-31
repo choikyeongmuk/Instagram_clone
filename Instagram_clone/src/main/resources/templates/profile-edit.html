@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/basic">
+<head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js">
+</script>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/style.css">
+<style type="text/css">
+
+.post_form_container{
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.post_form{
+    padding: 40px;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    margin: 0 0 10px;
+}
+
+.post_form .title{
+    margin: 0 10px 40px;
+    font-weight: 400;
+    font-size: 30px;
+    text-align: center;
+}
+
+
+.post_form .preview{
+    margin-bottom: 30px;
+}
+
+.post_form .preview .upload{
+    max-width: 200px;
+    height: 200px;
+    border: 1px solid #e6e6e6;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+</style>
+
+</head>
+<body>
+	<section id="container">
+
+		<div id="main_container">
+			<div class="editor">
+
+				<ul class="edit_ul">
+					<li><a class="edit_a edit_selected" href="/edit/profile">프로필
+							편집</a></li>
+				</ul>
+				<article class="editor_article">
+					<div class="profile_and_name">
+						<div class="post_form_container">
+							<div class="post_form">
+							<div class="preview">
+								<div class="upload">
+									<div class="post_btn">
+										<div class="plus_icon">
+											<span></span> <span></span>
+										</div>
+										<p>프로필 이미지 변경</p>
+										<canvas id="imageCanvas"></canvas>
+										<!--  <p><img id="img_id" src="#" style="width: 300px; height: 300px; object-fit: cover" alt="thumbnail"></p> -->
+									</div>
+								</div>
+							</div>
+							<p>
+								<input type="file" name="file" id="f_name" required="required">
+							</p>
+							<div class="edit_name">
+								<button id="profile_btn">프로필 사진 바꾸기</button>
+							</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="form">
+						<form class="profileUpdateForm" action="/users/id">
+							<div class="edit_user">
+								<aside>
+									<label for="username">사용자 이름</label>
+								</aside>
+								<input type="text" id="username" placeholder="사용자 계정"
+									value="username" /><br />
+							</div>
+							<div class="edit_user">
+								<aside>
+									<label for="email">이메일</label>
+								</aside>
+								<input type="text" id="email" placeholder="이메일 주소" value="email" /><br>
+							</div>
+							<div class="edit_user">
+								<aside>
+									<label for="name">이름</label>
+								</aside>
+								<input type="text" id="name" placeholder="성명" value="name" /><br>
+							</div>
+							<button type="button" class="submit_btn" id="btn-modify">수정</button>
+						</form>
+					</div>
+
+				</article>
+			</div>
+
+		</div>
+	</section>
+	
+	<div style="height: 100px;"></div>
+	
+	<script>
+       var fileInput  = document.querySelector( "#f_name" ),
+           button     = document.querySelector( ".input-file-trigger" ),
+           the_return = document.querySelector(".file-return");
+
+       // Show image
+       fileInput.addEventListener('change', handleImage, false);
+       var canvas = document.getElementById('imageCanvas');
+       var ctx = canvas.getContext('2d');
+
+
+        function handleImage(e){
+           var reader = new FileReader();
+           reader.onload = function(event){
+               var img = new Image();
+               // var imgWidth =
+               img.onload = function(){
+                   canvas.width = 200;
+                   canvas.height = 200;
+                   ctx.drawImage(img,0,0,200,200);
+               };
+               img.src = event.target.result;
+               // img.width = img.width*0.5
+               // canvas.height = img.height;
+           };
+           reader.readAsDataURL(e.target.files[0]);
+       }
+</script>
+</body>
+</html>
