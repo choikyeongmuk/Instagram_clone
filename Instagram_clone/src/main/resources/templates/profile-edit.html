@@ -60,7 +60,8 @@
 				<article class="editor_article">
 					<div class="profile_and_name">
 						<div class="post_form_container">
-							<div class="post_form">
+							<form action="profileImage" class="post_form" method="POST" enctype="multipart/form-data">
+							<!-- <div class="post_form"> -->
 							<div class="preview">
 								<div class="upload">
 									<div class="post_btn">
@@ -74,12 +75,13 @@
 								</div>
 							</div>
 							<p>
-								<input type="file" name="file" id="f_name" required="required">
+								<input type="file" name="file" id="userImage" required="required">
 							</p>
 							<div class="edit_name">
 								<button id="profile_btn">프로필 사진 바꾸기</button>
 							</div>
-							</div>
+							<!-- </div> -->
+							</form>
 						</div>
 						
 					</div>
@@ -117,7 +119,7 @@
 	<div style="height: 100px;"></div>
 	
 	<script>
-       var fileInput  = document.querySelector( "#f_name" ),
+       var fileInput  = document.querySelector( "#userImage" ),
            button     = document.querySelector( ".input-file-trigger" ),
            the_return = document.querySelector(".file-return");
 

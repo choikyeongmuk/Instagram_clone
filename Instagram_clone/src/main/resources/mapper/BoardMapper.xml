@@ -60,4 +60,22 @@
 		WHERE
 			board_no = #{boardNo}
 	</select>
+	
+	<select id="myList" resultType="com.insta.domain.BoardDTO">
+		SELECT
+			board_no,user_id,content,image
+		FROM
+			insta_board
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<select id="myListCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			insta_board
+		WHERE
+			user_id = #{userId}
+	</select>
 </mapper>

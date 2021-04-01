@@ -13,8 +13,11 @@ public interface BoardMapper {
 	public boolean write(BoardDTO board);
 	
 	public List<BoardDTO> list();
-	public BoardDTO detail(int boardNo);
+	public BoardDTO detail(int boardNo); //상세 페이지
 	
 	public boolean writeComment(BoardCommentDTO comment);
 	public List<BoardCommentDTO> commentList(int boardNo);
+	
+	public List<BoardDTO> myList(String userId);
+	public int myListCount(String userId);
 }

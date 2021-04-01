@@ -1,5 +1,6 @@
 package com.insta.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -14,8 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.insta.domain.BoardDTO;
 import com.insta.domain.UserDTO;
+import com.insta.domain.UserFollowDTO;
+import com.insta.service.BoardService;
 import com.insta.service.MemberService;
 
 @Controller
@@ -23,6 +29,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private BoardService boardService;
 	
 	private PrintWriter out;
 	
@@ -71,7 +80,7 @@ public class MemberController {
 		return "login";
 	}
 	
-	@GetMapping("/profile")
+	@RequestMapping(value = "/profile", method = {RequestMethod.POST, RequestMethod.GET})
 	public String profile(HttpServletRequest req, HttpServletResponse response ,Model model) throws IOException {
 		String userId = (String) req.getSession().getAttribute("userId");
 		if(userId == null) {
@@ -81,12 +90,73 @@ public class MemberController {
 		}
 		UserDTO userInfo = memberService.userInfo(userId);
 		model.addAttribute("userInfo", userInfo);
+		
+		List<BoardDTO> myList = boardService.myList(userId);
+		model.addAttribute("myList", myList);
+		
+		int myListCount = boardService.myListCount(userId);
+		model.addAttribute("myListCount", myListCount);
+		
+		return "profile";
+	}
+	
+	@RequestMapping(value = "/otherProfile", method = {RequestMethod.POST, RequestMethod.GET})
+	public String otherProfile(@RequestParam(value = "userId")String userId, HttpServletRequest req, HttpServletResponse response ,Model model) throws IOException {
+		//String userId = (String) req.getSession().getAttribute("userId");
+		if(userId == null) {
+			response.setContentType("text/html; charset=UTF-8");
+			out = response.getWriter();
+			out.println("<script>alert('로그인을 해주세요.'); location.href = '/login'</script>");
+		}
+		UserDTO userInfo = memberService.userInfo(userId);
+		//List<UserDTO> userInfo = memberService.userInfo(userId);
+		model.addAttribute("userInfo", userInfo);
+		
+		List<BoardDTO> myList = boardService.myList(userId);
+		model.addAttribute("myList", myList);
+		
+		int myListCount = boardService.myListCount(userId);
+		model.addAttribute("myListCount", myListCount);
+		
+		String myId = (String) req.getSession().getAttribute("userId");
+		List<String> followList = memberService.followList(myId);
+		model.addAttribute("followList", followList);
+		
 		return "profile";
 	}
 	
 	@GetMapping("/editProfile")
 	public String editProfile() {
 		return "profile-edit";
+	}
+	
+	@RequestMapping(value = "/profileImage", method = {RequestMethod.POST, RequestMethod.PATCH})
+	public String profileImage(HttpServletRequest req,@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+		String PATH = req.getServletContext().getRealPath("/profile/");
+		if (!file.getOriginalFilename().isEmpty()) {
+			file.transferTo(new File(PATH + file.getOriginalFilename()));
+		}
+		String userId= (String) req.getSession().getAttribute("userId");
+		String userImage = file.getOriginalFilename();
+		memberService.profileImage(userId,userImage);
+		return "redirect:profile";
+	}
+	
+	@RequestMapping(value = "/follow", method= {RequestMethod.POST, RequestMethod.GET})
+	public String follow(HttpServletRequest req, @RequestParam("otherId")String otherId) {
+		String userId = (String) req.getSession().getAttribute("userId");
+		
+		memberService.follow(userId, otherId);
+		
+		return "redirect:/profile";
+	}
+	
+	@RequestMapping(value = "/unFollow", method= {RequestMethod.POST, RequestMethod.GET})
+	public String unFollow(HttpServletRequest req, @RequestParam("otherId")String otherId) {
+		String userId = (String) req.getSession().getAttribute("userId");
+		memberService.unFollow(userId, otherId);
+		
+		return "redirect:/profile";
 	}
 	
 	/*

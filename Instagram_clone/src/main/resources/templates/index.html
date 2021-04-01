@@ -60,12 +60,13 @@
             <div class="contents_box"> 
                 <article class="contents" th:if="${not #lists.isEmpty( boardList )}" th:each="row : ${boardList}">
                     <header class="top">
-                        <div class="user_container">
-                            <div class="profile_img">
-                                <img src="imgs/thumb.jpeg" alt="프로필이미지">
+                        <div class="user_container" th:each="row2 : ${userInfo}" th:if="${row.userId == row2.userId}">
+                            <div class="profile_img" >
+                                <!-- <img src="imgs/thumb.jpeg" alt="프로필이미지"> -->
+                                <img th:src="@{/profile/{userImage} (userImage=${row2.userImage})}" > 
                             </div>
                             <div class="user_name">
-                                <div class="nick_name m_text" th:text="${row.userId}"></div>
+                                <a th:href="|@{/otherProfile?}userId=${row.userId}|" th:text="${row.userId}" style="text-decoration: none; color: black;"></a>
                                 <div class="country s_text">Seoul, South Korea</div>
                             </div>
                         </div>
@@ -93,9 +94,10 @@
                     <div class="bottom_icons">
                         <div class="left_icons">
                             <div style="text-align: right;">
-                               <a class="btn btn-outline-dark heart" th:href="|@{/heartAction?}boardNo=${row.boardNo}&userID='${session.userId}'&heart=${row.likeCount}|" style="color: #00000000; width: 24px; height: 24px; display: inline-block;"> 
+                               <!-- <a class="btn btn-outline-dark heart" th:href="|@{/heartAction?}boardNo=${row.boardNo}&userID='${session.userId}'&heart=${row.likeCount}|" style="color: #00000000; width: 24px; height: 24px; display: inline-block;">
                                <img id="heart" src=""> 
-                               </a>
+                                </a> -->
+                                <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
                             </div>
                             <div class="sprite_bubble_icon">
                             	<a th:href="|@{/detail?}boardNo=${row.boardNo}|" style="color: #00000000; width: 24px; height: 24px; display: inline-block;"></a>

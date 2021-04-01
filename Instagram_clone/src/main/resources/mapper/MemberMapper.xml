@@ -4,7 +4,7 @@
 	
 	<insert id="signUp">
 		INSERT INTO 
-			user_info
+			user_info(user_id, user_pwd, user_name, user_email)
 		VALUES(
 			#{userId}
 			,#{userPwd}
@@ -33,11 +33,54 @@
 			user_pwd = #{userPwd}
 	</select>
 	
-	<select id="userInfo" resultType="com.insta.domain.UserDTO">
+	<select id="userInfo" resultType="com.insta.domain.UserDTO">	
 		SELECT
 			*
 		FROM
 			user_info
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<select id="userAllInfo" resultType="com.insta.domain.UserDTO">
+		SELECT
+			*
+		FROM
+			user_info
+	</select>
+	
+	<update id="profileImage">
+		UPDATE
+			user_info
+		SET
+			user_image = #{userImage}
+		WHERE
+			user_id = #{userId}
+	</update>
+	
+	<insert id="follow">
+		INSERT INTO
+			user_follow
+		VALUES(
+			#{userId}
+			,#{otherId}
+		)
+	</insert>
+	
+	<delete id="unFollow">
+		DELETE FROM
+			user_follow
+		WHERE
+			user_id = #{userId}
+		AND
+			other_id = #{otherId}
+	</delete>
+	
+	<select id="followList" resultType="String">
+		SELECT 
+			other_id
+		FROM
+			user_follow
 		WHERE
 			user_id = #{userId}
 	</select>

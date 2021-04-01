@@ -34,4 +34,12 @@ public class BoardService {
 	public List<BoardCommentDTO> commentList(int boardNo){
 		return boardMapper.commentList(boardNo);
 	}
+	
+	public List<BoardDTO> myList(String userId){
+		return boardMapper.myList(userId);
+	}
+	
+	public int myListCount(String userId) {
+		return boardMapper.myListCount(userId);
+	}
 }

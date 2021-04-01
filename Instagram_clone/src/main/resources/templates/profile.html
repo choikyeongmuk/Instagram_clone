@@ -14,70 +14,74 @@
 
         <section class="b_inner">
 
-            <div class="hori_cont">
+            <div class="hori_cont" th:object="${userInfo}">
                 <div class="profile_wrap">
                     <div class="profile_img">
-                        <img src="imgs/thumb.jpeg" alt="착한호랑이">
+                        <!-- <img src="imgs/thumb.jpeg" alt="착한호랑이"> -->
+                        <img th:src="@{/profile/{userImage} (userImage=${userInfo.userImage})}" >
                     </div>
                 </div>
 
-                <div class="detail" th:object="${userInfo}">
-                    <div class="top">
+                <div class="detail" >
+                    <div class="top" th:if="${userInfo.userId == session.userId}">
                         <div class="user_name" th:text="*{userId}"></div>
                         <a href="editProfile" class="profile_edit">프로필편집</a>
                         <a href="logout" class="logout">로그아웃</a>
                     </div>
+                    
+                    <div class="top" th:unless="${userInfo.userId == session.userId}">
+                        <div class="user_name" th:text="*{userId}"></div>
+                        
+                    </div>
 
                     <ul class="middle">
-                        <li>
+                        <li th:object="${myListCount}">
                             <span>게시물</span>
-                            3
+                            [[ ${myListCount} ]]
                         </li>
                         <li>
                             <span>팔로워</span>
-                            3
+                            0
                         </li>
                         <li>
                             <span>팔로우</span> 
-                            3
+                            0
                         </li>
                     </ul>
+                    <div class="bottom" th:if="${userInfo.userId != session.userId}">
+                    	<div th:each="fList : ${followList}">
+	                    	<div th:if="${fList==userInfo.userId}">
+	                    		<a th:href="|@{/unFollow?}userId=${session.userId}&otherId=${userInfo.userId}|" style="text-decoration: none; color: black;">팔로우 취소</a>
+	                    	</div>
+	                    	<div th:unless="${fList==userInfo.userId}">
+	                    		<a th:href="|@{/follow?}userId=${session.userId}&otherId=${userInfo.userId}|" style="text-decoration: none; color: black;">팔로우</a>
+	                    	</div>
+                    	</div>
+                    </div>
+                    
+                    <div class="bottom" th:unless="${userInfo.userId != session.userId}">
+                    	
+                    </div>
+                    
                     <p class="about">
-                        <span class="nick_name">kindtigerrr</span>
+                        <span class="nick_name">my</span>
                         <span class="book_mark">bookmark</span>
                     </p>
 
                 </div>
             </div>
 
-            <div class="mylist_contents contents_container active">
-                <div class="pic">
-                    <a href="#"><img src="imgs/img_section/img01.jpg" alt=""></a>
+            <div class="mylist_contents contents_container active" >
+                <div class="pic" th:if="${not #lists.isEmpty( myList )}" th:each="row : ${myList}">
+                    <a href="#">
+                    	<!-- <img src="imgs/img_section/img01.jpg" alt=""> -->
+                    	<img th:src="@{/upload/{image} (image=${row.image})}">
+                    </a>
                 </div>
-                <div class="pic">
-                    <a href="#"><img src="imgs/img_section/img02.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img03.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img02.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img03.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img01.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img02.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img03.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img01.jpg" alt=""></a>
-                </div>
+            </div>
+            
+            <div th:unless="${not #lists.isEmpty( myList )}">
+				<p style="text-align: center; padding-top: 20px; font-size: 20px; font: bold;">작성된 글이 없습니다.</p>
             </div>
 
 

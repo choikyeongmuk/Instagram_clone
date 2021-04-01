@@ -94,7 +94,7 @@
 							</div>
 
 							<div class="count_likes">
-								좋아요 <span class="count">2,351</span> 개
+								좋아요 <span class="count" id="likeCount">[[${likeCount}]]</span> 개
 							</div>
 							<div class="timer">2시간</div>
 
@@ -126,6 +126,7 @@
      $(document).ready(function () {
 
            var heartval = /*[[${heart}]]*/;
+           var likeCount = document.getElementById("likeCount").innerHTML;
 
            if(heartval>0) {
                console.log(heartval);
@@ -151,9 +152,15 @@
                        that.prop('name',data);
                        if(data==1) {
                            $('#heart').prop("src","imgs/heart2.png");
+                           $('#likeCount').html(Number(likeCount)+1);
                        }
                        else{
                            $('#heart').prop("src","imgs/heart.png");
+                           if(heartval!=0){
+                        	   $('#likeCount').html(Number(likeCount)-1);
+                           }else{
+                        	   $('#likeCount').html(Number(likeCount));
+                           }
                        }
                    }
                });

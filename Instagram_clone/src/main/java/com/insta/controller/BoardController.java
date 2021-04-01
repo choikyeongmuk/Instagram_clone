@@ -2,6 +2,7 @@ package com.insta.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.insta.domain.BoardCommentDTO;
 import com.insta.domain.BoardDTO;
 import com.insta.domain.BoardLikeDTO;
+import com.insta.domain.UserDTO;
 import com.insta.service.BoardLikeService;
 import com.insta.service.BoardService;
+import com.insta.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +37,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardLikeService boardLikeService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write() {
@@ -58,6 +64,16 @@ public class BoardController {
 		List<BoardDTO> boardList = boardService.list();
 		model.addAttribute("boardList", boardList);
 		
+		String userId = "";
+		List<UserDTO> userInfo= memberService.userAllInfo();
+		
+		for(int i=0; i<boardList.size();i++) {
+			if(!userInfo.get(i).getUserId().contains(boardList.get(i).getUserId())) {
+				userInfo.add(i, memberService.userInfo(userId));
+			}
+		}
+		
+		model.addAttribute("userInfo", userInfo);
 		return "index";
 	}
 	
@@ -81,6 +97,12 @@ public class BoardController {
 
         model.addAttribute("heart",boardlike);
         
+        BoardLikeDTO likeCount  = new BoardLikeDTO();
+        likeCount.setBoardNo(boardNo);
+        int boardlikeAll = boardLikeService.getLikeCount(likeCount);
+        
+        model.addAttribute("likeCount", boardlikeAll);
+        
 		return "detail";
 	}
 
@@ -98,7 +120,7 @@ public class BoardController {
        boardLikeDTO.setBoardNo(boardNo);
        boardLikeDTO.setUserId(userid);
 
-       System.out.println(heart);
+       //System.out.println(heart);
 
        if(heart >= 1) {
           boardLikeService.deleteLike(boardLikeDTO);
@@ -123,7 +145,7 @@ public class BoardController {
         boardLikeDTO.setBoardNo(boardNo);
         boardLikeDTO.setUserId(userid);
 
-        System.out.println(heart);
+        //System.out.println(heart);
 
         if(heart >= 1) {
            boardLikeService.deleteLike(boardLikeDTO);
