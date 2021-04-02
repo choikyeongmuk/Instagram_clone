@@ -20,4 +20,5 @@ public interface BoardMapper {
 	
 	public List<BoardDTO> myList(String userId);
 	public int myListCount(String userId);
+	public List<BoardDTO> searchBoardPosts(String keyword);
 }

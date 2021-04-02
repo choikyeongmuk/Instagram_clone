@@ -1,30 +1,36 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <header id="header" th:fragment="main-navigator">
-	<section class="h_inner">
+   <section class="h_inner">
 
-		<h1 class="logo">
-			<a href="index">
-				<div class="sprite_insta_icon"></div>
-				<div>
-					<div class="sprite_write_logo"></div>
-				</div>
-			</a>
-		</h1>
+      <h1 class="logo">
+         <a href="index">
+            <div class="sprite_insta_icon"></div>
+            <div>
+               <div class="sprite_write_logo"></div>
+            </div>
+         </a>
+      </h1>
 
-		<div class="search_field">
-			<input type="text" placeholder="검색" tabindex="0">
+	<form action="/search" method="GET">
+      <div class="search_field">
+         <input type="text" name="keyword" list="idList" placeholder="검색" tabindex="0">
+    <datalist id="idList">
+        <option th:each="row : ${userList}" th:text="${row.userId}" th:value="${row.userId}"><a href="www.google.com"></a></option>	 
+    </datalist>
+         <div class="fake_field">
+            <span class=sprite_small_search_icon></span> <span>검색</span>
+         </div>
+      </div>
+      </form>
 
-			<div class="fake_field">
-				<span class=sprite_small_search_icon></span> <span>검색</span>
-			</div>
-		</div>
+      <div class="right_icons">
+         <a href="write"><div class="sprite_camera_icon"></div></a> 
+         <a href="login"><div class="sprite_compass_icon"></div></a> 
+         <a href="follow.html"><div class="sprite_heart_icon_outline"></div></a>
+         <a href="profile"><div class="sprite_user_icon_outline"></div></a>
+      </div>
+   </section>
 
-		<div class="right_icons">
-			<a href="write"><div class="sprite_camera_icon"></div></a> 
-			<a href="login"><div class="sprite_compass_icon"></div></a> 
-			<a href="follow.html"><div class="sprite_heart_icon_outline"></div></a>
-			<a href="profile"><div class="sprite_user_icon_outline"></div></a>
-		</div>
-	</section>
+   
 </header>
 </html>

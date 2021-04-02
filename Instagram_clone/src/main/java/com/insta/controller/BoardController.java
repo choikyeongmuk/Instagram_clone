@@ -168,4 +168,15 @@ public class BoardController {
 		
 		return "redirect:detail?boardNo="+boardNo;
 	}
+	
+	@RequestMapping(value="/search", method=RequestMethod.GET)
+	public String search(@RequestParam(value="keyword") String keyword, Model model) {
+	    List<UserDTO> userDtoList = memberService.searchPosts(keyword);
+	    List<BoardDTO> boardList = boardService.searchBoardPosts(keyword);
+	    
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("userList", userDtoList);
+
+	    return "index";
+	}
 }

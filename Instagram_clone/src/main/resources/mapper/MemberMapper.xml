@@ -84,4 +84,13 @@
 		WHERE
 			user_id = #{userId}
 	</select>
+	
+	<select id="searchPosts" resultType="com.insta.domain.UserDTO" parameterType="String">
+		SELECT
+			*
+		FROM
+			user_info
+		WHERE
+			user_id like CONCAT('%',#{keyword},'%') 
+	</select>
 </mapper>
