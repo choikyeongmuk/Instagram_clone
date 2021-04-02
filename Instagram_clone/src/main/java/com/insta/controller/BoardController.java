@@ -66,10 +66,9 @@ public class BoardController {
 		
 		List<UserDTO> userInfo= memberService.userAllInfo();
 		
-		String userId="";
 		for(int i=0; i<userInfo.size();i++) {
 			if(!userInfo.get(i).getUserId().contains(boardList.get(i).getUserId())) {
-				userInfo.add(i, memberService.userInfo(userId));
+				userInfo.add(i, memberService.userInfo(userInfo.get(i).getUserId()));
 			}
 		}
 		
