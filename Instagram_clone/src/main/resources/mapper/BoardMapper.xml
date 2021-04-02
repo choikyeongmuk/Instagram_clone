@@ -78,4 +78,13 @@
 		WHERE
 			user_id = #{userId}
 	</select>
+	
+	<select parameterType="String" id="searchBoardPosts" resultType="com.insta.domain.BoardDTO">
+		SELECT
+			*
+		FROM
+			insta_board
+		WHERE
+			user_id = #{keyword} 
+	</select>
 </mapper>

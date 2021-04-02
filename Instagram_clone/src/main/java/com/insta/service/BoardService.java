@@ -42,4 +42,9 @@ public class BoardService {
 	public int myListCount(String userId) {
 		return boardMapper.myListCount(userId);
 	}
+	
+	public List<BoardDTO> searchBoardPosts(String keyword) {
+		return boardMapper.searchBoardPosts(keyword);
+	}
+
 }

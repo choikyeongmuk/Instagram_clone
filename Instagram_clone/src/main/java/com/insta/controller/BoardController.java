@@ -66,9 +66,10 @@ public class BoardController {
 		
 		List<UserDTO> userInfo= memberService.userAllInfo();
 		
+		String userId="";
 		for(int i=0; i<userInfo.size();i++) {
 			if(!userInfo.get(i).getUserId().contains(boardList.get(i).getUserId())) {
-				userInfo.add(i, memberService.userInfo(userInfo.get(i).getUserId()));
+				userInfo.add(i, memberService.userInfo(userId));
 			}
 		}
 		
@@ -167,5 +168,16 @@ public class BoardController {
 		boardService.writeComment(new BoardCommentDTO(boardNo,replyNo,userId,comComment));
 		
 		return "redirect:detail?boardNo="+boardNo;
+	}
+	
+	@RequestMapping(value="/search", method=RequestMethod.GET)
+	public String search(@RequestParam(value="keyword") String keyword, Model model) {
+	    List<UserDTO> userDtoList = memberService.searchPosts(keyword);
+	    List<BoardDTO> boardList = boardService.searchBoardPosts(keyword);
+	    
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("userList", userDtoList);
+
+	    return "index";
 	}
 }

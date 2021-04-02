@@ -55,4 +55,8 @@ public class MemberService {
 	public List<String> followList(String userId) {
 		return memberMapper.followList(userId);
 	}
+	
+	public List<UserDTO> searchPosts(String keyword) {
+		return memberMapper.searchPosts(keyword);
+	}
 }

@@ -24,5 +24,7 @@ public interface MemberMapper {
 	public int unFollow(@Param("userId")String userId, @Param("otherId")String otherId);
 	public List<String> followList(@Param("userId")String userId);
 	
+	public List<UserDTO> searchPosts(String keyword);
+	
 }
  
