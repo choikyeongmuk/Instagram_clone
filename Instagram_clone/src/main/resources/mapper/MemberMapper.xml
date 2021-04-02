@@ -35,7 +35,7 @@
 	
 	<select id="userInfo" resultType="com.insta.domain.UserDTO">	
 		SELECT
-			*
+			user_id,user_image
 		FROM
 			user_info
 		WHERE
@@ -44,7 +44,7 @@
 	
 	<select id="userAllInfo" resultType="com.insta.domain.UserDTO">
 		SELECT
-			*
+			user_id,user_pwd,user_email,user_name,user_image
 		FROM
 			user_info
 	</select>

@@ -148,7 +148,7 @@ public class MemberController {
 		
 		memberService.follow(userId, otherId);
 		
-		return "redirect:/profile";
+		return "redirect:/otherProfile?userId="+otherId;
 	}
 	
 	@RequestMapping(value = "/unFollow", method= {RequestMethod.POST, RequestMethod.GET})
@@ -156,7 +156,7 @@ public class MemberController {
 		String userId = (String) req.getSession().getAttribute("userId");
 		memberService.unFollow(userId, otherId);
 		
-		return "redirect:/profile";
+		return "redirect:/otherProfile?userId="+otherId;
 	}
 	
 	/*
