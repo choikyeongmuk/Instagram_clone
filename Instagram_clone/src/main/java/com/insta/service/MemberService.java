@@ -16,9 +16,6 @@ public class MemberService {
 	@Autowired
 	private MemberMapper memberMapper;
 	
-	@Autowired
-	private BoardMapper boardMapper;
-	
 	public boolean signUp(UserDTO user) {
 		return memberMapper.signUp(user);
 	};
@@ -52,9 +49,18 @@ public class MemberService {
 		return memberMapper.unFollow(userId, otherId);
 	}
 
-	public List<String> followList(String userId) {
-		return memberMapper.followList(userId);
+	public String isFollow(String userId, String otherId) {
+		return memberMapper.isFollow(userId, otherId);
 	}
+	
+	public int followerCount(String userId) {
+		return memberMapper.followerCount(userId);
+	}
+	
+	public int followCount(String userId) {
+		return memberMapper.followCount(userId);
+	}
+	
 	
 	public List<UserDTO> searchPosts(String keyword) {
 		return memberMapper.searchPosts(keyword);

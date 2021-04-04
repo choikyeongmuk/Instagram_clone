@@ -39,27 +39,24 @@
                             <span>게시물</span>
                             [[ ${myListCount} ]]
                         </li>
-                        <li>
+                        <li th:object="${followCount}">
                             <span>팔로워</span>
-                            0
+                            [[ ${followerCount} ]]
                         </li>
-                        <li>
+                        <li th:object="${followCount}">
                             <span>팔로우</span> 
-                            0
+                            [[ ${followCount} ]]
                         </li>
                     </ul>
                     <div class="bottom" th:if="${userInfo.userId != session.userId}">
-                    	<div th:if="${not #lists.isEmpty( followList )}" th:each="fList : ${followList}">
-	                    	<div th:if="${fList==userInfo.userId}">
-	                    		<a th:href="|@{/unFollow?}userId=${session.userId}&otherId=${userInfo.userId}|" style="text-decoration: none; color: black;">팔로우 취소</a>
+	                    <div>
+	                    	<div th:if="${isFollow != null}">
+	                    		<a th:href="|@{/unFollow?}userId=${session.userId}&otherId=${userInfo.userId}|" style="text-decoration: none; color: black; width: 150px;">팔로우 취소</a>
 	                    	</div>
-	                    	
-                    	</div>
-                    	<div th:unless="${not #lists.isEmpty( followList )}">
-                    		<div>
+	                    	<div th:unless="${isFollow != null}">
 	                    		<a th:href="|@{/follow?}userId=${session.userId}&otherId=${userInfo.userId}|" style="text-decoration: none; color: black;">팔로우</a>
 	                    	</div>
-	                    </div>
+                    	</div>
                     </div>
                     
                     <div class="bottom" th:unless="${userInfo.userId != session.userId}">

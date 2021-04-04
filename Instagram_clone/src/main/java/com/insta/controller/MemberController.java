@@ -97,6 +97,11 @@ public class MemberController {
 		int myListCount = boardService.myListCount(userId);
 		model.addAttribute("myListCount", myListCount);
 		
+		int followerCount = memberService.followerCount(userId);
+		int followCount = memberService.followCount(userId);
+		model.addAttribute("followerCount", followerCount);
+		model.addAttribute("followCount", followCount);
+		
 		return "profile";
 	}
 	
@@ -119,8 +124,13 @@ public class MemberController {
 		model.addAttribute("myListCount", myListCount);
 		
 		String myId = (String) req.getSession().getAttribute("userId");
-		List<String> followList = memberService.followList(myId);
-		model.addAttribute("followList", followList);
+		String isFollow = memberService.isFollow(myId, userId);
+		model.addAttribute("isFollow", isFollow);
+		
+		int followerCount = memberService.followerCount(userId);
+		int followCount = memberService.followCount(userId);
+		model.addAttribute("followerCount", followerCount);
+		model.addAttribute("followCount", followCount);
 		
 		return "profile";
 	}

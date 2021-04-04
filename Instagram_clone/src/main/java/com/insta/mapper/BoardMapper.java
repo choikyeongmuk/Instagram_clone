@@ -17,6 +17,7 @@ public interface BoardMapper {
 	
 	public boolean writeComment(BoardCommentDTO comment);
 	public List<BoardCommentDTO> commentList(int boardNo);
+	public List<BoardCommentDTO> commentListOne(int boardNo);
 	
 	public List<BoardDTO> myList(String userId);
 	public int myListCount(String userId);

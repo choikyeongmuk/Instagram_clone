@@ -13,12 +13,12 @@
 
 	<form action="/search" method="GET">
       <div class="search_field">
-         <input type="text" name="keyword" list="idList" placeholder="검색" tabindex="0">
-    <datalist id="idList">
-        <option th:each="row : ${userList}" th:text="${row.userId}" th:value="${row.userId}"><a href="www.google.com"></a></option>	 
-    </datalist>
+         <input type="text" name="keyword" list="idList" tabindex="0" id="s">
+	     <datalist id="idList">
+	         <option th:each="row : ${userList}" th:text="${row.userId}" th:value="${row.userId}"></option>	 
+	     </datalist>
          <div class="fake_field">
-            <span class=sprite_small_search_icon></span> <span>검색</span>
+            <span class=sprite_small_search_icon></span> <span id="ss">검색</span>
          </div>
       </div>
       </form>
@@ -30,7 +30,5 @@
          <a href="profile"><div class="sprite_user_icon_outline"></div></a>
       </div>
    </section>
-
-   
 </header>
 </html>

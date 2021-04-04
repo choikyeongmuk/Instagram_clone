@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.insta.domain.UserDTO;
-import com.insta.domain.UserFollowDTO;
 
 @Repository("MemberMapper")
 public interface MemberMapper {
@@ -22,7 +21,10 @@ public interface MemberMapper {
 	
 	public int follow(@Param("userId")String userId, @Param("otherId")String otherId);
 	public int unFollow(@Param("userId")String userId, @Param("otherId")String otherId);
-	public List<String> followList(@Param("userId")String userId);
+	public String isFollow(@Param("userId")String userId, @Param("otherId")String otherId);
+	public int followerCount(String userId);
+	public int followCount(String userId);
+	
 	
 	public List<UserDTO> searchPosts(String keyword);
 	

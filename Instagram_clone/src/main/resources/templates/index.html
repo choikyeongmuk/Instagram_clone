@@ -71,8 +71,8 @@
                             </div>
                         </div>
 
-                        <div class="sprite_more_icon" data-name="more">
-                            <ul class="toggle_box">
+                        <div class="sprite_more_icon" data-name="more" onclick="more()">
+                            <ul id="more" class="toggle_box" >
                                 <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
                                 <li>수정</li>
                                 <li>삭제</li>
@@ -111,15 +111,15 @@
 
                     <div class="likes m_text">
                         좋아요
-                        <span id="like-count-39">2,346</span>
+                        <span id="like-count-39">[[${row.likeCount}]]</span>
                         개
                     </div>
 
                     <div class="comment_container">
-                        <div class="comment" id="comment-list-ajax-post37">
-                            <div class="comment-detail">
-                                <div class="nick_name m_text">dongdong2</div>
-                                <div>강아지가 너무 귀여워요~!</div>
+                        <div class="comment" id="comment-list-ajax-post37" th:each="one : ${commentList}">
+                            <div class="comment-detail" th:if="${row.boardNo == one.boardNo}">
+                                <div class="nick_name m_text">[[ ${one.userId} ]]</div>
+                                <div>[[ ${one.comComment} ]]</div>
                             </div>
                         </div>
                         <div class="small_heart">
@@ -245,6 +245,7 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="js/main.js"></script>
+
 <script th:inline="javascript">
    /*<![CDATA[*/
 	   
@@ -257,13 +258,30 @@
 		   alert(e.text());
 	   })
    } */
+   function more(){
+	   console.log("?????????????");
+	   
+		document.getElementById("more").classList.toggle("show");
+	};
+   
+	window.onclick = function(event) {
+		  if (!event.target.matches('.sprite_more_icon')) {
+
+		    var dropdowns = document.getElementsByClassName("toggle_box");
+		    var i;
+		    for (i = 0; i < dropdowns.length; i++) {
+		      var openDropdown = dropdowns[i];
+		      if (openDropdown.classList.contains('show')) {
+		        openDropdown.classList.remove('show');
+		      }
+		    }
+		  }
+		}
    
      $(document).ready(function () {
 
            var heartval = /*[[${likeCount}]]*/;
-        
-           /* var boardNo = document.getElementById("b_no").innerHTML;
-           console.log("???",boardNo); */
+           
            if(heartval>0) {
                console.log(heartval);
                $("#heart").prop("src", "imgs/heart2.png");

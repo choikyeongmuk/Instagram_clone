@@ -129,12 +129,12 @@
            var likeCount = document.getElementById("likeCount").innerHTML;
 
            if(heartval>0) {
-               console.log(heartval);
+               //console.log(heartval);
                $("#heart").prop("src", "imgs/heart2.png");
                $(".heart").prop('name',heartval)
            }
            else {
-               console.log(heartval);
+               //console.log(heartval);
                $("#heart").prop("src", "imgs/heart.png");
                $(".heart").prop('name',heartval)
            }
@@ -152,7 +152,11 @@
                        that.prop('name',data);
                        if(data==1) {
                            $('#heart').prop("src","imgs/heart2.png");
-                           $('#likeCount').html(Number(likeCount)+1);
+                           if(heartval!=0){
+                        	   $('#likeCount').html(Number(likeCount));
+                           }else{
+                        	   $('#likeCount').html(Number(likeCount)+1);
+                           }
                        }
                        else{
                            $('#heart').prop("src","imgs/heart.png");
@@ -177,14 +181,14 @@ function writeComment(){
 	console.log("주소 :" + commentUrl);
 	
 	data = { content : comment };
-    $.ajax({
+     $.ajax({
         type: 'post',
         url: "/writeComment?boardNo="+commentUrl+"&replyNo=0&comComment="+comment,
         contentType: 'application/json; charset-utf-8',
         data: JSON.stringify(data),
         dataType: 'json',
         success: listReload()
-    });
+    }); 
 }
 
 function listReload(){

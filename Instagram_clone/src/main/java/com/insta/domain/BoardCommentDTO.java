@@ -2,11 +2,13 @@ package com.insta.domain;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class BoardCommentDTO {
 
 	private int comNo;

@@ -15,9 +15,4 @@ public class UserDTO {
 	private String userEmail;
 	private String userImage;
 	
-	public UserDTO(String userId, String userImage) {
-		this.userId = userId;
-		this.userImage = userImage;
-	}
-	
 }

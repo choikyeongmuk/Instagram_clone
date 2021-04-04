@@ -35,7 +35,7 @@
 	
 	<select id="userInfo" resultType="com.insta.domain.UserDTO">	
 		SELECT
-			user_id,user_image
+			user_id,user_pwd,user_name,user_email,user_image
 		FROM
 			user_info
 		WHERE
@@ -44,7 +44,7 @@
 	
 	<select id="userAllInfo" resultType="com.insta.domain.UserDTO">
 		SELECT
-			user_id,user_pwd,user_email,user_name,user_image
+			user_id,user_pwd,user_name,user_email,user_image
 		FROM
 			user_info
 	</select>
@@ -79,6 +79,35 @@
 	<select id="followList" resultType="String">
 		SELECT 
 			other_id
+		FROM
+			user_follow
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<select id="isFollow" resultType="String">
+		SELECT 
+			*
+		FROM
+			user_follow
+		WHERE
+			user_id = #{userId}
+		AND
+			other_id = #{otherId}
+	</select>
+	
+	<select id="followerCount" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			user_follow
+		WHERE
+			other_id = #{userId}
+	</select>
+	
+	<select id="followCount" resultType="int">
+		SELECT
+			count(*)
 		FROM
 			user_follow
 		WHERE

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,8 +25,6 @@ import com.insta.domain.UserDTO;
 import com.insta.service.BoardLikeService;
 import com.insta.service.BoardService;
 import com.insta.service.MemberService;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 public class BoardController {
@@ -64,13 +61,23 @@ public class BoardController {
 		List<BoardDTO> boardList = boardService.list();
 		model.addAttribute("boardList", boardList);
 		
-		List<UserDTO> userInfo= memberService.userAllInfo();
+		List<BoardCommentDTO> commentList = new ArrayList<BoardCommentDTO>();
+		for(int i=0; i<boardList.size(); i++) {
+			commentList = boardService.commentListOne(boardList.get(i).getBoardNo());
+		}
 		
-		for(int i=0; i<userInfo.size();i++) {
-			if(!userInfo.get(i).getUserId().contains(boardList.get(i).getUserId())) {
-				userInfo.add(i, memberService.userInfo(userInfo.get(i).getUserId()));
+		for(int i=0; i<boardList.size();i++) {
+			for(int j=i+1; j<commentList.size();j++) {
+				if(commentList.get(i).getBoardNo() == commentList.get(j).getBoardNo())
+					commentList.remove(i);
 			}
 		}
+		
+		model.addAttribute("commentList",commentList);
+		
+		
+		List<UserDTO> userInfo= memberService.userAllInfo();
+		model.addAttribute("userList",userInfo);
 		
 		model.addAttribute("userInfo", userInfo);
 		return "index";
@@ -92,8 +99,6 @@ public class BoardController {
         boardLikeDTO.setUserId(userId);
 
         int boardlike = boardLikeService.getMyLike(boardLikeDTO);
-        System.out.println(boardlike);
-
         model.addAttribute("heart",boardlike);
         
         BoardLikeDTO likeCount  = new BoardLikeDTO();

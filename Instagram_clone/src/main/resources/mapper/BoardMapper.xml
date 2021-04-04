@@ -18,7 +18,7 @@
 	
 	<select id="list" parameterType="com.insta.domain.BoardDTO" resultType="com.insta.domain.BoardDTO">
 		SELECT
-			board_no,user_id,content,image
+			board_no,user_id,content,likeCount,image
 		FROM
 			insta_board
 		<where>
@@ -59,6 +59,15 @@
 			insta_board_comment
 		WHERE
 			board_no = #{boardNo}
+	</select>
+	
+	<select id="commentListOne" resultType="com.insta.domain.BoardCommentDTO">
+		SELECT 
+			c.com_no,c.board_no,c.reply_no,c.user_id,c.com_comment,c.com_postdate
+		FROM 
+			insta_board_comment c, insta_board b 
+		WHERE 
+			b.board_no = c.board_no
 	</select>
 	
 	<select id="myList" resultType="com.insta.domain.BoardDTO">
