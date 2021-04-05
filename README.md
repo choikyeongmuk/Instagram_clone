@@ -15,3 +15,4 @@
 * V2_3_3 follow/unfollow 기능 추가
 * V2_3_3_2_검색 기능 추가
 * V2_3_4_follow 및 좋아요 기능 보완, index 수정중(댓글)
+* V2_4_index 댓글 완료, 게시글 update & delete, 스크랩 기능 추가(detail, profile)
