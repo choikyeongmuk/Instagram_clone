@@ -1,4 +1,6 @@
-# Instagram_clone (스프링부트_인스타그램_클론코딩)
+# Instagram_clone
+* 스프링부트 인스타그램 클론코딩
+* HTML 및 CSS 출처: https://github.com/kindfamily/f-instagram
 ## 개발환경
 * IDE : eclipse
 * Database : MySql
