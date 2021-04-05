@@ -2,6 +2,7 @@ package com.insta.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.insta.domain.BoardCommentDTO;
@@ -11,6 +12,8 @@ import com.insta.domain.BoardDTO;
 public interface BoardMapper {
 	
 	public boolean write(BoardDTO board);
+	public boolean edit(@Param("content") String content,@Param("image") String image, @Param("boardNo") int boardNo);
+	public boolean delete(@Param("boardNo") int boardNo);
 	
 	public List<BoardDTO> list();
 	public BoardDTO detail(int boardNo); //상세 페이지

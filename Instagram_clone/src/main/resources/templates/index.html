@@ -71,13 +71,6 @@
                             </div>
                         </div>
 
-                        <div class="sprite_more_icon" data-name="more" onclick="more()">
-                            <ul id="more" class="toggle_box" >
-                                <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
-                                <li>수정</li>
-                                <li>삭제</li>
-                            </ul>
-                        </div>
                     </header>
 
                     <div class="img_section">
@@ -116,8 +109,8 @@
                     </div>
 
                     <div class="comment_container">
-                        <div class="comment" id="comment-list-ajax-post37" th:each="one : ${commentList}">
-                            <div class="comment-detail" th:if="${row.boardNo == one.boardNo}">
+                        <div class="comment" id="comment-list-ajax-post37" th:if="${row.boardNo == one.boardNo}" th:each="one : ${commentList}">
+                            <div class="comment-detail">
                                 <div class="nick_name m_text">[[ ${one.userId} ]]</div>
                                 <div>[[ ${one.comComment} ]]</div>
                             </div>

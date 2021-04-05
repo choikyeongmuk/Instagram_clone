@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.basic.BasicMenuBarUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.insta.domain.BoardCommentDTO;
 import com.insta.domain.BoardDTO;
 import com.insta.domain.BoardLikeDTO;
+import com.insta.domain.BoardScrapDTO;
 import com.insta.domain.UserDTO;
 import com.insta.service.BoardLikeService;
+import com.insta.service.BoardScrapService;
 import com.insta.service.BoardService;
 import com.insta.service.MemberService;
+import com.insta.util.DeduplicationUtils;
 
 @Controller
 public class BoardController {
@@ -34,6 +38,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardLikeService boardLikeService;
+	
+	@Autowired
+	private BoardScrapService boardScrapService;
 	
 	@Autowired
 	private MemberService memberService;
@@ -61,20 +68,17 @@ public class BoardController {
 		List<BoardDTO> boardList = boardService.list();
 		model.addAttribute("boardList", boardList);
 		
-		List<BoardCommentDTO> commentList = new ArrayList<BoardCommentDTO>();
+		List<BoardCommentDTO> commentListOne = new ArrayList<BoardCommentDTO>();
 		for(int i=0; i<boardList.size(); i++) {
-			commentList = boardService.commentListOne(boardList.get(i).getBoardNo());
+			commentListOne = boardService.commentListOne(boardList.get(i).getBoardNo());
 		}
 		
-		for(int i=0; i<boardList.size();i++) {
-			for(int j=i+1; j<commentList.size();j++) {
-				if(commentList.get(i).getBoardNo() == commentList.get(j).getBoardNo())
-					commentList.remove(i);
-			}
+		List<BoardCommentDTO> commentListOnes = DeduplicationUtils.deduplication(commentListOne, BoardCommentDTO:: getBoardNo);
+		for(int i=0; i<commentListOnes.size();i++) {
+			System.out.println(commentListOnes.get(i).getComComment());
 		}
 		
-		model.addAttribute("commentList",commentList);
-		
+		model.addAttribute("commentList",commentListOnes);
 		
 		List<UserDTO> userInfo= memberService.userAllInfo();
 		model.addAttribute("userList",userInfo);
@@ -84,7 +88,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String detail(@ModelAttribute("board")BoardDTO boards, @RequestParam(value = "boardNo", required = false) int boardNo, 
+	public String detail(@RequestParam(value = "boardNo", required = false) int boardNo, 
 						Model model, HttpServletRequest req) {
 		BoardDTO board = boardService.detail(boardNo);
 		model.addAttribute("board", board);
@@ -107,7 +111,46 @@ public class BoardController {
         
         model.addAttribute("likeCount", boardlikeAll);
         
+        BoardScrapDTO scrap = new BoardScrapDTO();
+        scrap.setBoardNo(boardNo);
+        scrap.setUserId(userId);
+        int isScrap = boardScrapService.isScrap(scrap);
+        model.addAttribute("isScrap", isScrap);
+        
 		return "detail";
+	}
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public String edit(@RequestParam(value = "boardNo", required = false) int boardNo, Model model) {
+		BoardDTO board = boardService.detail(boardNo);
+		model.addAttribute("board", board);
+		
+		return "post-edit";
+	}
+
+	
+	@RequestMapping(value = "/edit", method = {RequestMethod.POST, RequestMethod.PATCH})
+	public String edit(HttpServletRequest req,@RequestParam("file") MultipartFile file,
+						@RequestParam(value = "boardNo", required = false) int boardNo,
+						@RequestParam("content")String content,
+						Model model
+						) throws IllegalStateException, IOException {
+		
+		String PATH = req.getServletContext().getRealPath("/upload/");
+		if (!file.getOriginalFilename().isEmpty()) {
+			file.transferTo(new File(PATH + file.getOriginalFilename()));
+		}
+		boardService.edit(content,file.getOriginalFilename(),boardNo);
+		
+		return "redirect:detail?boardNo="+boardNo;
+	}
+	
+	@RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
+	public String delete(@RequestParam(value = "boardNo", required = false) int boardNo) {
+		
+		boardService.delete(boardNo);
+		
+		return "redirect:index";
 	}
 
 
@@ -161,7 +204,29 @@ public class BoardController {
 
        return "redirect:index";
     }
-	
+    
+    @ResponseBody
+    @RequestMapping(value = "/scrap", method = {RequestMethod.POST,RequestMethod.GET}, produces = "application/json")
+    public int scrap(HttpServletRequest req,@RequestParam("boardNo")int boardNo) {
+    	String userId = (String) req.getSession().getAttribute("userId");
+    	
+    	BoardScrapDTO scrap = new BoardScrapDTO();
+    	scrap.setBoardNo(boardNo);
+    	scrap.setUserId(userId);
+    	
+    	int isScrap = boardScrapService.isScrap(scrap);
+    	
+        if(isScrap >= 1) {
+        	boardScrapService.deleteScrap(userId,boardNo);
+        	isScrap=0;
+        } else {
+        	boardScrapService.insertScrap(userId,boardNo);
+        	isScrap=1;
+        }
+    	
+    	return isScrap;
+    }
+    
 	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
 	@ResponseBody
 	public String writeComment(HttpServletRequest req,@RequestParam("boardNo")int boardNo,

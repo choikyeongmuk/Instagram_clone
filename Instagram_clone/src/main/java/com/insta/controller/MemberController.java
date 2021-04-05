@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.insta.domain.BoardDTO;
+import com.insta.domain.BoardScrapDTO;
 import com.insta.domain.UserDTO;
 import com.insta.domain.UserFollowDTO;
+import com.insta.service.BoardScrapService;
 import com.insta.service.BoardService;
 import com.insta.service.MemberService;
 
@@ -32,6 +34,9 @@ public class MemberController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private BoardScrapService boardScrapService;
 	
 	private PrintWriter out;
 	
@@ -102,6 +107,9 @@ public class MemberController {
 		model.addAttribute("followerCount", followerCount);
 		model.addAttribute("followCount", followCount);
 		
+		List<BoardDTO> scrapList = boardScrapService.scrapList(userId);
+		model.addAttribute("scrapList", scrapList);
+		
 		return "profile";
 	}
 	
@@ -131,6 +139,9 @@ public class MemberController {
 		int followCount = memberService.followCount(userId);
 		model.addAttribute("followerCount", followerCount);
 		model.addAttribute("followCount", followCount);
+		
+		List<BoardDTO> scrapList = boardScrapService.scrapList(userId);
+		model.addAttribute("scrapList", scrapList);
 		
 		return "profile";
 	}

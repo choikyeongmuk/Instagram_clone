@@ -73,50 +73,20 @@
 
             <div class="mylist_contents contents_container active" >
                 <div class="pic" th:if="${not #lists.isEmpty( myList )}" th:each="row : ${myList}">
-                    <a href="#">
+                    <a th:href="|@{/detail?}boardNo=${row.boardNo}|">
                     	<!-- <img src="imgs/img_section/img01.jpg" alt=""> -->
                     	<img th:src="@{/upload/{image} (image=${row.image})}">
                     </a>
                 </div>
             </div>
             
-            <div th:unless="${not #lists.isEmpty( myList )}">
-				<p style="text-align: center; padding-top: 20px; font-size: 20px; font: bold;">작성된 글이 없습니다.</p>
-            </div>
-
-
             <div class="bookmark_contents contents_container">
-                <div class="pic">
-                    <a href="#"><img src="imgs/img_section/img03.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"><img src="imgs/img_section/img01.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img02.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img01.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img02.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img03.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img01.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img02.jpg" alt=""></a>
-                </div>
-                <div class="pic">
-                    <a href="#"> <img src="imgs/img_section/img02.jpg" alt=""></a>
+                <div class="pic" th:if="${not #lists.isEmpty( scrapList )}" th:each="sList : ${scrapList}">
+                    <a th:href="|@{/detail?}boardNo=${sList.boardNo}|"> 
+                    	<img th:src="@{/upload/{image} (image=${sList.image})}">
+                    </a>
                 </div>
             </div>
-
-
-
 
         </section>
     </div>

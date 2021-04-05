@@ -25,7 +25,6 @@ public interface MemberMapper {
 	public int followerCount(String userId);
 	public int followCount(String userId);
 	
-	
 	public List<UserDTO> searchPosts(String keyword);
 	
 }

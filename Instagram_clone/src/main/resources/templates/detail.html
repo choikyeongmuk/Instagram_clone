@@ -30,11 +30,14 @@
 										<div class="country">Seoul, South Korea</div>
 									</div>
 								</div>
-								<div class="sprite_more_icon" data-name="more">
-									<ul class="more_detail">
-										<li>팔로우</li>
-										<li>수정</li>
-										<li>삭제</li>
+								<div class="sprite_more_icon" data-name="more" th:if="${board.userId == session.userId}">
+									<ul class="toggle_box">
+										<li>
+											<a th:href="|@{/edit?}boardNo=${board.boardNo}|" style="text-decoration: none">수정</a>
+										</li>
+										<li>
+											<a th:href="|@{/delete?}boardNo=${board.boardNo}|" style="text-decoration: none">삭제</a>
+										</li>
 									</ul>
 								</div>
 
@@ -76,9 +79,9 @@
 							<div class="bottom_icons">
 		                        <div class="left_icons">
 		                            <div style="text-align: right;">
-		                               <a class="btn btn-outline-dark heart"> 
-		                               <img id="heart" src="">
-		                               </a>
+		                               	<a class="btn btn-outline-dark heart"> 
+		                               		<img id="heart" src="">
+		                               	</a>
 		                            </div>
 									<div>
 										<div class="sprite_bubble_icon"></div>
@@ -89,7 +92,11 @@
 								</div>
 
 								<div class="right_icon">
-									<div class="sprite_bookmark_outline" data-name="book-mark"></div>
+									<div>
+										<a class="btn btn-outline-dark scrap">
+											<img id="scrap" src="">
+										</a>
+									</div>
 								</div>
 							</div>
 
@@ -122,7 +129,7 @@
 <!--<script src="js/detail.js"></script>-->
 <script th:inline="javascript">
    /*<![CDATA[*/
-   
+	   
      $(document).ready(function () {
 
            var heartval = /*[[${heart}]]*/;
@@ -169,10 +176,68 @@
                    }
                });
            });
+           
+           var isScrap = /*[[${isScrap}]]*/;
+           console.log(isScrap);
+           if(isScrap > 0){
+        	   $("#scrap").prop("src","imgs/scrap2.png");
+        	   $(".scrap").prop('name2',isScrap)
+           }else{
+        	   $("#scrap").prop("src","imgs/scrap.png");
+        	   $(".scrap").prop('name2',isScrap)
+           }
+           
+           $(".scrap").on("click", function () {
+
+               var that = $(".scrap");
+
+               var sendData = {'boardNo' : /*[[${board.boardNo}]]*/,'scrap' : that.prop('name2')};
+               $.ajax({
+                   url: "/scrap",
+                   type :'POST',
+                   data : sendData,
+                   success : function(data){
+                       that.prop('name2',data);
+                       if(data==1) {
+                           $('#scrap').prop("src","imgs/scrap2.png");
+                       }
+                       else{
+                           $('#scrap').prop("src","imgs/scrap.png");
+                       }
+                   }
+               });
+           });
+           
        });
      /*]]>*/
 </script>
 <script type="text/javascript">
+var toggle_btn = $(".toggle_box")
+$(".sprite_more_icon").click(ToggleBox);
+
+function ToggleBox(){
+    if(toggle_btn.css("display")=="none")
+        toggle_btn.css("display","block");
+    else
+        toggle_btn.css("display", "none");
+}
+
+function postDelete (){
+    console.log("삭제버튼");
+    id =  $("#postId").val();
+
+    $.ajax({
+        type : 'delete',
+        url : "/api/posts/" + id ,
+
+    }).done(function () {
+        alert("삭제완료!");
+        window.location.href = '/';
+    }).fail(function (error) {
+        alert("실패");
+    });
+}
+
 function writeComment(){
 	var comment = $("#content").val();
 	console.log("댓글 :" + comment);

@@ -16,6 +16,29 @@
 		)
 	</insert>
 	
+	<update id="edit">
+		UPDATE
+			insta_board
+		<!--  
+		<trim prefix="SET" suffixOverrides=",">
+			content = #{content},
+	      	<if test="#{image} != null">image= #{image}</if>
+	   	</trim>
+	   	-->
+	   	SET
+	   		content = #{content},
+	   		image = #{image}
+	   	WHERE
+	   		board_no = #{boardNo}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM 
+			insta_board
+		WHERE
+			board_no = #{boardNo}
+	</delete>
+	
 	<select id="list" parameterType="com.insta.domain.BoardDTO" resultType="com.insta.domain.BoardDTO">
 		SELECT
 			board_no,user_id,content,likeCount,image

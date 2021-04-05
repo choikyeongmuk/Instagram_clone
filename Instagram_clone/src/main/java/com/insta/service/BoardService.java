@@ -2,6 +2,7 @@ package com.insta.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,14 @@ public class BoardService {
 	
 	public boolean write(BoardDTO board) {
 		return boardMapper.write(board);
+	}
+	
+	public boolean edit(String content, String image, int boardNo) {
+		return boardMapper.edit(content,image,boardNo);
+	}
+	
+	public boolean delete(int boardNo) {
+		return boardMapper.delete(boardNo);
 	}
 	
 	public List<BoardDTO> list(){
