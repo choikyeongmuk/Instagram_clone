@@ -7,7 +7,7 @@
 * Bulid Tool : gradle
 * Java version : Java8
 * etc Library : Lombok, thymeleaf
-* 2021/03/29 ~
+* 2021/03/29 ~ 2021/04/05
 ##
 * V1_로그인 및 회원가입
 * V2_1_글 작성 및 html수정
